@@ -7,9 +7,10 @@ set -euo pipefail
 
 # ── Configuration ────────────────────────────
 
-DOTFILES_REPO="https://github.com/you/dotfiles"
+DOTFILES_REPO="https://github.com/figueroass27/dotfiles"
 AUR_HELPER="yay"
-PKGS_DIR="$HOME/arch-install/pkgs"
+DOTFILES_DIR="$HOME/Dotfiles"
+PKGS_DIR="$HOME/Dotfiles/packages/"
 
 # ── Helpers ────────────────────────────
 
@@ -30,8 +31,8 @@ preflight() {
 
 pull_repo() {
 	info "Cloning install repo"
-	git clone "$DOTFILES_REPO" "$HOME/arch-install"
-	ok "Repo cloned to ~/arch-install"
+	git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+	ok "Repo cloned to $DOTFILES_DIR"
 }
 
 # ── AUR HELPER ────────────────────────────
@@ -73,7 +74,7 @@ install_dotfiles() {
 		yay -S --needed --noconfirm stow
 	fi
 
-	cd "$HOME/arch-install"
+	cd "$DOTFILES_DIR"
 
 	# stow everything - the */ glob expands all subdirectories
 	stow --restow --target="$HOME" */
