@@ -92,13 +92,14 @@ ok "systemd-boot installed and configured"
 # ── Snapper ──────────────────────────────────────
 
 setup_snapper() {
+	info "Setting-Up Snapper"
 	# snapper wants to create /.snapshots itself - but we already have the
 	# @snapshots subvolume mounted there, so we unmount, let snapper create
 	# the config, then remount our subvolume over it
 	umount /.snapshots
 	rm -rf /.snapshots
 
-	snapper -c root create-config /
+	snapper -c --no-dbus root create-config /
 
 	# Replace the directroy snapper just created with our subvolume
 	rm -rf /.snapshots
@@ -109,11 +110,11 @@ setup_snapper() {
 	# Snapshot retention policy - tune to taste
 	sed -i \
 		-e 's/^TIMELINE_MIN_AGE=.*/TIMELINE_MIN_AGE="1800"/' \
-		-e 's/^TIMELINE_LIMIT_HOURLY=.*/TIMELINE_LIMIT_HOURLY="5"' \
-		-e 's/^TIMELINE_LIMIT_DAILY=.*/TIMELINE_LIMIT_DAILY="7"' \
-		-e 's/^TIMELINE_LIMIT_WEEKLY=.*/TIMELINE_LIMIT_WEEKLY="1"' \
-		-e 's/^TIMELINE_LIMIT_MONTHLY=.*/TIMELINE_LIMIT_MONTHLY="1"' \
-		-e 's/^TIMELINE_LIMIT_YEARLY=.*/TIMELINE_LIMIT_YEARLY="0"' \
+		-e 's/^TIMELINE_LIMIT_HOURLY=.*/TIMELINE_LIMIT_HOURLY="5"/' \
+		-e 's/^TIMELINE_LIMIT_DAILY=.*/TIMELINE_LIMIT_DAILY="7"/' \
+		-e 's/^TIMELINE_LIMIT_WEEKLY=.*/TIMELINE_LIMIT_WEEKLY="1"/' \
+		-e 's/^TIMELINE_LIMIT_MONTHLY=.*/TIMELINE_LIMIT_MONTHLY="1"/' \
+		-e 's/^TIMELINE_LIMIT_YEARLY=.*/TIMELINE_LIMIT_YEARLY="0"/' \
 		/etc/snapper/configs/root
 
 	# snap-pac hooks (auto snapshots on pacman install/remove/upgrade)
