@@ -5,7 +5,7 @@
 # ======================================================
 
 # Makes it so script exits on errors properly
-set -euo pipefile
+set -euo pipefail
 
 # ── Load Vars From Phase 1 ────────────────────────────
 source /root/chroot_vars.sh
