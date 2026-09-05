@@ -78,7 +78,7 @@ EOF
 
 luks_uuid=$(blkid -s UUID -o value ${ROOT_PART})
 
-cat > /boot/loader/entires/arch.conf <<EOF
+cat > /boot/loader/entries/arch.conf <<EOF
 title Arch Linux
 linux /vmlinuz-linux
 initrd /${UCODE}.img
