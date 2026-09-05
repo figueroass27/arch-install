@@ -53,7 +53,7 @@ confirm() {
 preflight() {
 	info "Preflight checks"
 	confirm "Is Hosename:$HOSTNAME Username:$USERNAME TimeZone:$TIMEZONE Disk:$DISK okay?"
-	if [[ -d /sys/firmware/efi ]]; then
+	if [[ ! -d /sys/firmware/efi ]]; then
 		err "Not booted in UEFI mode"
 	fi
 
@@ -61,7 +61,7 @@ preflight() {
 		err "No internet connection"
 	fi
 
-	if [[ -b "$DISK" ]]; then
+	if [[ ! -b "$DISK" ]]; then
 		err "Disk $DISK not found."
 	fi
 	confirm "This will WIPE $DISK. Continue?"
@@ -153,8 +153,7 @@ ROOT_PART="$ROOT_PART"
 UCODE="$UCODE"
 EOF
 
-	# curl -sL [insert link to script pt 2] -o /mnt/root/chroot.sh
-	
+	cp /root/arch-install/Install-Chroot.sh /mnt/root/Install-Chroot.sh
 	arch-chroot /mnt bash /root/Install-Chroot.sh
 }
 
