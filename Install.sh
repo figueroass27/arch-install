@@ -82,6 +82,7 @@ partition_disk() {
 setup_luks() {
 	info "Setting up LUKS encryption on $ROOT_PART"
 	cryptsetup luksFormat --type luks2 "$ROOT_PART"
+	info "Opening LUKS encrypted drive $ROOT_PART"
 	cryptsetup open "$ROOT_PART" "$LUKS_LABEL"
 	ok "LUKS opened as /dev/mapper/$LUKS_LABEL"
 }
@@ -116,7 +117,8 @@ mount_subvols() {
 	mount -o "${BTRFS_MOUNT_OPTS},subvol=@var_log"			/dev/mapper/"$LUKS_LABEL" /mnt/var/log
 	mount -o "${BTRFS_MOUNT_OPTS},subvol=@var_cache_pacman"	/dev/mapper/"$LUKS_LABEL" /mnt/var/cache/pacman
 
-	mount "$EFI_PART" /mnt/boot
+	# Umask means its only accessible from root
+	mount -o umask=0077 "$EFI_PART" /mnt/boot
 	ok "All subvolumes mounted"
 }
 

@@ -66,6 +66,8 @@ setup_bootloader() {
 	info "Installing systemd-boot"
 	bootctl install
 
+	mkdir -p /boot/loader/entries
+
 	# Main loader config
 	cat > /boot/loader/loader.conf <<EOF
 default arch.conf
