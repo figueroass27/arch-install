@@ -5,7 +5,7 @@
 # ======================================================
 
 # Makes it so script exits on errors properly
-set -euo pipefile
+set -euo pipefail
 
 # ── Variables ─────────────────────────────────────────
 
@@ -16,9 +16,13 @@ USERNAME="carbon"
 TIMEZONE="America/Chicago"
 LOCALE="en_US.UTF-8"
 KEYMAP="us"
-EFI_PART="${DISK}p1"
-ROOT_PART="${DISK}p2"
-LUKS_LABEL="luks"
+if [[ "$DISK" == *"nvme"* ]]; then
+    EFI_PART="${DISK}p1"
+    ROOT_PART="${DISK}p2"
+else
+    EFI_PART="${DISK}1"
+    ROOT_PART="${DISK}2"
+fiLUKS_LABEL="luks"
 BTRFS_MOUNT_OPTS="noatime,compress=zstd,space_cache=v2"
 SUBVOLS=("@" "@home" "@snapshots" "@var_log" "@var_cache_pacman")
 
