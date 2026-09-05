@@ -22,7 +22,8 @@ if [[ "$DISK" == *"nvme"* ]]; then
 else
     EFI_PART="${DISK}1"
     ROOT_PART="${DISK}2"
-fiLUKS_LABEL="luks"
+fi
+LUKS_LABEL="luks"
 BTRFS_MOUNT_OPTS="noatime,compress=zstd,space_cache=v2"
 SUBVOLS=("@" "@home" "@snapshots" "@var_log" "@var_cache_pacman")
 
@@ -42,7 +43,7 @@ info()	{ echo -e "\n\e[1;34m[INFO]\e[0m $*"; }
 ok()	{ echo -e "\e[1;32m[OK]\e[0m $*"; }
 err()	{ echo -e "\e[1;31m[ERROR]\e[0m $*" >&2; exit 1; }
 
-confrim() {
+confirm() {
 	read -rp "$1 [y/N]: " reply
 	[[ "${reply,,}" == "y" ]] || err "Aborted."
 }
