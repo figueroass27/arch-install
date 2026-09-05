@@ -99,7 +99,7 @@ setup_snapper() {
 	umount /.snapshots
 	rm -rf /.snapshots
 
-	snapper -c --no-dbus root create-config /
+	snapper -c root create-config /
 
 	# Replace the directroy snapper just created with our subvolume
 	rm -rf /.snapshots
@@ -116,6 +116,10 @@ setup_snapper() {
 		-e 's/^TIMELINE_LIMIT_MONTHLY=.*/TIMELINE_LIMIT_MONTHLY="1"/' \
 		-e 's/^TIMELINE_LIMIT_YEARLY=.*/TIMELINE_LIMIT_YEARLY="0"/' \
 		/etc/snapper/configs/root
+	
+	cat /etc/snapper/configs/root
+
+	ok "Created retention policy"
 
 	# snap-pac hooks (auto snapshots on pacman install/remove/upgrade)
 	# snap-pac was installed in pacstrap - just enable the snapper timers
