@@ -64,7 +64,6 @@ preflight() {
 	if [[ ! -b "$DISK" ]]; then
 		err "Disk $DISK not found."
 	fi
-	confirm "This will WIPE $DISK. Continue?"
 	ok "Preflight passed"
 }
 
@@ -132,7 +131,7 @@ install_base() {
 	pacstrap -K /mnt \
 		base base-devel linux linux-headers linux-firmware \
 		btrfs-progs snapper snap-pac "${UCODE}" \
-		networkmanager neovim git curl sudo
+		networkmanager ntp neovim git curl sudo
 	ok "Base system installed"
 }
 
