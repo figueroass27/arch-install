@@ -52,9 +52,18 @@ confirm() {
 
 preflight() {
 	info "Preflight checks"
-	[[ -d /sys/firmware/efi ]] || err "Not booted in UEFI mode"
-	ping -c1 archlinux.org &>/dev/null || err "No internet connection"
-	[[ -b "$DISK" ]] || err "Disk $DISK not found."
+	confirm "Is Hosename:$HOSTNAME Username:$USERNAME TimeZone:$TIMEZONE Disk:$DISK okay?"
+	if [[ -d /sys/firmware/efi ]]; then
+		err "Not booted in UEFI mode"
+	fi
+
+	if ! ping -c1 -W3 8.8.8.8 &>/dev/null; then\
+		err "No internet connection"
+	fi
+
+	if [[ -b "$DISK" ]]; then
+		err "Disk $DISK not found."
+	fi
 	confirm "This will WIPE $DISK. Continue?"
 	ok "Preflight passed"
 }
@@ -89,8 +98,15 @@ setup_btrfs() {
 	umount /mnt
 }
 
+setup_fat32() {
+	info "Formatting efi partition to F32"
+	mkfs.fat -F32 "$EFI_PART"
+	ok "Formatted $EFI_PART to F32"
+}
+
 mount_subvols() {
 	info "Mounting subvolumes"
+
 	mount -o "${BTRFS_MOUNT_OPTS},subvol=@"					/dev/mapper/"$LUKS_LABEL" /mnt
 	mkdir -p /mnt/{home,.snapshots,var/log,var/cache/pacman,boot}
 
@@ -99,8 +115,6 @@ mount_subvols() {
 	mount -o "${BTRFS_MOUNT_OPTS},subvol=@var_log"			/dev/mapper/"$LUKS_LABEL" /mnt/var/log
 	mount -o "${BTRFS_MOUNT_OPTS},subvol=@var_cache_pacman"	/dev/mapper/"$LUKS_LABEL" /mnt/var/cache/pacman
 
-	# EFI
-	mkfs.fat -F32 "$EFI_PART"
 	mount "$EFI_PART" /mnt/boot
 	ok "All subvolumes mounted"
 }
@@ -161,6 +175,7 @@ main() {
 	partition_disk
 	setup_luks
 	setup_btrfs
+	setup_fat32
 	mount_subvols
 	install_base
 	generate_fstab
