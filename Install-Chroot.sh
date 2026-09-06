@@ -53,7 +53,7 @@ setup_initcpio() {
 	info "Configuring mkinitcpio hooks"
 	sed -i 's/^MODULES=.*/MODULES=(btrfs)/' /etc/mkinitcpio.conf
 
-	sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont block sd-encrypt filesystems fsck)/' \
+	sed -i 's/^HOOKS=.*/HOOKS=(base systemd autodetect microcode modconf kms keyboard sd-vconsole block sd-encrypt filesystems fsck)/' \
 		/etc/mkinitcpio.conf
 
 	mkinitcpio -P
