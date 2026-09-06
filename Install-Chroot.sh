@@ -100,7 +100,7 @@ setup_snapper() {
 	rm -rf /.snapshots
 
 	# snapper -c root create-config / 2>/dev/null || true
-	snapper --no-dbus -c root create-config
+	snapper --no-dbus -c root create-config /
 
 	# Replace the directroy snapper just created with our subvolume
 	rm -rf /.snapshots
