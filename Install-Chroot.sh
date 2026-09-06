@@ -170,13 +170,13 @@ stage_postinstall() {
 	info "Staging post-install script for $USERNAME"
 	local home_dir="/home/$USERNAME"
 
-	curl -sL https://raw.githubusercontent.com/you/arch-install/main/post-install.sh \
-		-o "${home_dir}/post-install.sh"
+	mv /root/Install-Post.sh "${home_dir}/"
+	mv /root/Packages.txt "${home_dir}/"
+	chown "$USERNAME:$USERNAME" "${home_dir}/Install-Post.sh"
+	chown "$USERNAME:$USERNAME" "${home_dir}/Packages.txt"
+	chmod +x "${home_dir}/Install-Post.sh"
 
-	chown "$USERNAME:$USERNAME" "${home_dir}/post-install.sh"
-	chmod +x "${home_dir}/post-install.sh"
-
-	ok "post-install.sh is ready at ~/post-install.sh - run it after first boot"
+	ok "Install-Post.sh and package files are ready at ~/Install-Post.sh - run it after first boot"
 }
 
 # ── Main ──────────────────────────────────────

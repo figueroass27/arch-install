@@ -10,7 +10,7 @@ set -euo pipefail
 DOTFILES_REPO="https://github.com/figueroass27/dotfiles"
 AUR_HELPER="yay"
 DOTFILES_DIR="$HOME/Dotfiles"
-PKGS_DIR="$HOME/Dotfiles/packages/"
+PKGS="$HOME/Packages.txt/"
 
 # ── Helpers ────────────────────────────
 
@@ -57,8 +57,8 @@ install_aur_helper() {
 
 install_packages() {
 	info "Intalling pacman packages"
-	if [[ -f "$PKGS_DIR/packages.txt" ]]; then
-		grep -v '^\s*#' "$PKGS_DIR/packages.txt" | grep -v '^\s*$' | \
+	if [[ -f "$PKGS.txt" ]]; then
+		grep -v '^\s*#' "$PKGS" | grep -v '^\s*$' | \
 			$AUR_HELPER -S --needed --noconfirm -
 		ok "Packages installed"
 	fi

@@ -17,6 +17,7 @@ grim
 hunspell-en_us
 imagemagick
 jq
+kitty
 less
 libappdindicator
 lib32-vulkan-radeon

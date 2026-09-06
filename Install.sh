@@ -157,6 +157,8 @@ UCODE="$UCODE"
 EOF
 
 	cp /root/arch-install/Install-Chroot.sh /mnt/root/Install-Chroot.sh
+	cp /root/arch-install/Install-Post.sh /mnt/root/Install-Post.sh
+	cp -r /root/arch-install/Packages.txt /mnt/root/Packages.txt
 	arch-chroot /mnt bash /root/Install-Chroot.sh
 }
 
